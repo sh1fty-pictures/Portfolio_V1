@@ -17,6 +17,11 @@ class LinkTreePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purpleAccent,
+        onPressed: () => _launchURL("mailto:shift.tianabercrombie@gmail.com"),
+        child: const Icon(Icons.send, color: Colors.white),
+      ),
       backgroundColor: const Color(0xFF0A0118), // Dark Matrix Purple
       body: SingleChildScrollView(
         child: Center(
@@ -40,8 +45,8 @@ class LinkTreePage extends StatelessWidget {
                 const SizedBox(height: 20),
                 const CircleAvatar(
                   radius: 60,
-                  backgroundColor: Colors.purpleAccent,
-                  backgroundImage: AssetImage('assets/profile.jpg'), // Replace with your image
+                  backgroundColor: Color.fromARGB(255, 223, 64, 251),
+                  backgroundImage: AssetImage('assets/images/Lil-Logo.jpg'), // Replace with your image
                 ),
                 const SizedBox(height: 15),
                 const Text(
@@ -110,8 +115,16 @@ class LinkTreePage extends StatelessWidget {
       title: "Contact Info",
       child: Column(
         children: [
-          _buildListTile(Icons.email, "shift.tianabercrombie@gmail.com"),
-          _buildListTile(Icons.phone_android, "+1 (208) 290-0187"),
+          _buildListTile(
+            Icons.email, 
+            "shift.tianabercrombie@gmail.com", 
+            "mailto:shift.tianabercrombie@gmail.com" // Opens email app
+          ),
+          _buildListTile(
+            Icons.phone_android, 
+            "+1 (208) 290-0187", 
+            "tel:+12082900187" // Opens dialer
+          ),
         ],
       ),
     );
@@ -131,11 +144,11 @@ class LinkTreePage extends StatelessWidget {
             children: [
               _buildSocialIcon(
                 Icons.camera_alt, 
-                "https://instagram.com/sh1fty270", // Replace with your link
+                "https://www.instagram.com/sh1fty_pictures/", // Replace with your link
               ),
               _buildSocialIcon(
                 Icons.facebook, 
-                "https://facebook.com/sh1fty270", // Replace with your link
+                "https://www.facebook.com/profile.php?id=61575357496330", // Replace with your link
               ),
             ],
           ),
@@ -192,11 +205,21 @@ Widget _buildSocialIcon(IconData icon, String url) {
     );
   }
 
-  Widget _buildListTile(IconData icon, String text) {
-    return ListTile(
+  Widget _buildListTile(IconData icon, String text, String url) {
+     return ListTile(
       leading: Icon(icon, color: Colors.purpleAccent, size: 20),
       title: Text(text, style: const TextStyle(color: Colors.white, fontSize: 14)),
+      onTap: () => _launchURL(url), // Now clickable!
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint("Could not launch $url");
+    }
   }
 }
 
@@ -441,6 +464,11 @@ class PortfolioPageNotDone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purpleAccent,
+        onPressed: () => _launchURL("mailto:shift.tianabercrombie@gmail.com"),
+        child: const Icon(Icons.send, color: Colors.white),
+      ),
       backgroundColor: const Color(0xFF0A0118),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -471,6 +499,15 @@ class PortfolioPageNotDone extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint("Could not launch $url");
+    }
+  }
 }
 
 // |Portfolio Done Page \\
@@ -480,6 +517,11 @@ class PortfolioPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purpleAccent,
+        onPressed: () => _launchURL("mailto:shift.tianabercrombie@gmail.com"),
+        child: const Icon(Icons.send, color: Colors.white),
+      ),
       backgroundColor: const Color(0xFF0A0118),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -490,18 +532,30 @@ class PortfolioPage extends StatelessWidget {
         ),
         title: const Text("PORTFOLIO", style: TextStyle(color: Colors.white, letterSpacing: 2)),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const PhotographyButton(),
-            const SizedBox(height: 20),
-            const VideosButton(),
-            const SizedBox(height: 20),
-          ]
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const PhotographyButton(),
+              const SizedBox(height: 20),
+              const VideosButton(),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint("Could not launch $url");
+    }
   }
 }
 
@@ -511,17 +565,22 @@ class PhotographyPage extends StatelessWidget {
   const PhotographyPage({super.key});
 
   final List<String> carPhotos = const [
-    'assets/car1.jpg',
-    'assets/car2.jpg',
-    'assets/car3.jpg',
-    'assets/car4.jpg',
-    'assets/car5.jpg',
-    'assets/car6.jpg',
+    'assets/images/Lil-Logo.jpg',
+    'assets/images/Big-Logo.jpg',
+    'assets/images/placeholder.png',
+    'assets/images/placeholder.png',
+    'assets/images/placeholder.png',
+    'assets/images/placeholder.png',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purpleAccent,
+        onPressed: () => _launchURL("mailto:shift.tianabercrombie@gmail.com"),
+        child: const Icon(Icons.send, color: Colors.white),
+      ),
       backgroundColor: const Color(0xFF0A0118),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -609,6 +668,15 @@ class PhotographyPage extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint("Could not launch $url");
+    }
+  }
 }
 
 // |Videos Page \\
@@ -624,6 +692,11 @@ class VideographyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purpleAccent,
+        onPressed: () => _launchURL("mailto:shift.tianabercrombie@gmail.com"),
+        child: const Icon(Icons.send, color: Colors.white),
+      ),
       backgroundColor: const Color(0xFF0A0118),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -691,6 +764,15 @@ class VideographyPage extends StatelessWidget {
       builder: (context) => VideoPopUp(videoPath: videoPath),
     );
   }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      debugPrint("Could not launch $url");
+    }
+  }
 }
 
 // Separate Widget to handle Video State
@@ -746,3 +828,4 @@ class _VideoPopUpState extends State<VideoPopUp> {
     super.dispose();
   }
 }
+

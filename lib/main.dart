@@ -46,7 +46,7 @@ class LinkTreePage extends StatelessWidget {
                 const CircleAvatar(
                   radius: 60,
                   backgroundColor: Color.fromARGB(255, 223, 64, 251),
-                  backgroundImage: AssetImage('assets/images/Lil-Logo.jpg'), // Replace with your image
+                  backgroundImage: AssetImage('assets/logos/Lil-Logo.jpg'), // Replace with your image
                 ),
                 const SizedBox(height: 15),
                 const Text(
@@ -66,7 +66,7 @@ class LinkTreePage extends StatelessWidget {
                     padding: EdgeInsets.all(20.0),
                     child: Text(
                       '''
--- Adobe Certified Professional --
+-- Certified Adobe Professional --
 -- Into Cars, Photography, & Games --
 -- Just here to make a life for myself --
                       ''', //Bio
@@ -149,6 +149,10 @@ class LinkTreePage extends StatelessWidget {
               _buildSocialIcon(
                 Icons.facebook, 
                 "https://www.facebook.com/profile.php?id=61575357496330", // Replace with your link
+              ),
+              _buildSocialIcon(
+                Icons.adobe, 
+                "https://www.credly.com/badges/26c27d57-5b90-4d88-afe3-59108c66a382/public_url",
               ),
             ],
           ),
@@ -528,9 +532,21 @@ class PortfolioPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.purpleAccent),
-          onPressed: () => Navigator.pop(context), // Goes back to Link Tree
+          onPressed: () => Navigator.pop(context),
         ),
         title: const Text("PORTFOLIO", style: TextStyle(color: Colors.white, letterSpacing: 2)),
+        // --- ADD THIS SECTION ---
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_filled, color: Colors.purpleAccent),
+            tooltip: 'Back to Links',
+            onPressed: () {
+              // This pops all the way back to the first route (LinkTreePage)
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+          ),
+          const SizedBox(width: 10), // A little breathing room on the right
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -565,12 +581,15 @@ class PhotographyPage extends StatelessWidget {
   const PhotographyPage({super.key});
 
   final List<String> carPhotos = const [
-    'assets/images/Lil-Logo.jpg',
-    'assets/images/Big-Logo.jpg',
-    'assets/images/placeholder.png',
-    'assets/images/placeholder.png',
-    'assets/images/placeholder.png',
-    'assets/images/placeholder.png',
+    'assets/photography/CarsNCoffee-1.jpg',
+    'assets/photography/CarsNCoffee-3.jpg',
+    'assets/photography/CarsNCoffee-4.jpg',
+    'assets/photography/CarsNCoffee-7.jpg',
+    'assets/photography/CarsNCoffee-9.jpg',
+    'assets/photography/CarsNCoffee-10.jpg',
+    'assets/photography/CarsNCoffee-11.jpg',
+    'assets/photography/CarsNCoffee-13.jpg',
+    'assets/photography/CarsNCoffee-14.jpg',
   ];
 
   @override
@@ -590,51 +609,127 @@ class PhotographyPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text("PHOTOGRAPHY", style: TextStyle(color: Colors.white, letterSpacing: 2)),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 400,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
+        // --- ADD THIS SECTION ---
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_filled, color: Colors.purpleAccent),
+            tooltip: 'Back to Links',
+            onPressed: () {
+              // This pops all the way back to the first route (LinkTreePage)
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
           ),
-          itemCount: carPhotos.length,
-          itemBuilder: (context, index) {
-            return _buildPhotoCard(context, carPhotos[index]); // Pass context here
-          },
-        ),
+          const SizedBox(width: 10), // A little breathing room on the right
+        ],
       ),
+      body:Center(
+        child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 1000),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(), // Makes scrolling feel smoother
+              slivers: [
+                // --- The Warning Box (Wrapped in SliverToBoxAdapter) ---
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      _buildGlassWarningBox(
+                        title: "Warning",
+                        child: const Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Photos may look bad due to compression! Please go to my Instagram for better quality: @sh1fty_pictures!!\n\nSome photos may extend beyond your screen if you're on mobile, so I recommend viewing on desktop for the best experience.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color.fromARGB(179, 255, 251, 19), 
+                              fontSize: 16
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20), 
+                    ],
+                  ),
+                ),
+                
+                // --- The Photo Grid ---
+                SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 450, // Slightly wider to allow 2-3 columns on desktop
+                    childAspectRatio: 1.0,   // Change to 1.0 for squares, or keep 3/2 for landscape
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return _buildPhotoCard(context, carPhotos[index]);
+                    },
+                    childCount: carPhotos.length,
+                  ),
+                ),
+                
+                // --- Bottom Spacer for the FAB ---
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 100),
+                ),
+              ],
+            ),
+          ),
+        )
+      )
     );
   }
 
+  // --- Helper to build the actual Photo Cards ---
   Widget _buildPhotoCard(BuildContext context, String assetPath) {
     return GestureDetector(
       onTap: () {
-        // --- THIS IS YOUR LIGHTBOX ---
         showDialog(
           context: context,
           builder: (context) => BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5), // Blurs background
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Dialog(
               backgroundColor: Colors.transparent,
-              insetPadding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset(assetPath, fit: BoxFit.contain),
-                  ),
-                  const SizedBox(height: 10),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text("CLOSE", 
-                      style: TextStyle(color: Colors.purpleAccent, fontWeight: FontWeight.bold)
+              insetPadding: const EdgeInsets.all(20),
+              child: ConstrainedBox(
+                // This prevents the dialog from ever being taller than the screen
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                  maxWidth: 1000,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // Shrinks to fit content
+                  children: [
+                    Flexible( // This allows the image to shrink if it hits the limit
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          assetPath, 
+                          fit: BoxFit.contain, // Keeps the car in frame
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 15),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.black.withOpacity(0.5),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          "CLOSE", 
+                          style: TextStyle(
+                            color: Colors.purpleAccent, 
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2,
+                          )
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -677,6 +772,35 @@ class PhotographyPage extends StatelessWidget {
       debugPrint("Could not launch $url");
     }
   }
+
+  Widget _buildGlassWarningBox({Widget? child, String? title}) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: const Color.fromARGB(255, 230, 216, 23).withOpacity(0.3), width: 1.5),
+          ),
+          child: Column(
+            children: [
+              if (title != null) ...[
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(title, style: const TextStyle(color: Color.fromARGB(179, 255, 251, 19), fontWeight: FontWeight.bold)),
+                ),
+                const Divider(color: Color.fromARGB(179, 255, 251, 19), indent: 50, endIndent: 50),
+              ],
+              child ?? const SizedBox(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 // |Videos Page \\
@@ -706,6 +830,18 @@ class VideographyPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text("VIDEOGRAPHY", style: TextStyle(color: Colors.white, letterSpacing: 2)),
+        // --- ADD THIS SECTION ---
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.home_filled, color: Colors.purpleAccent),
+            tooltip: 'Back to Links',
+            onPressed: () {
+              // This pops all the way back to the first route (LinkTreePage)
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+          ),
+          const SizedBox(width: 10), // A little breathing room on the right
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(12.0),

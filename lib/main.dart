@@ -46,7 +46,7 @@ class LinkTreePage extends StatelessWidget {
                 const CircleAvatar(
                   radius: 60,
                   backgroundColor: Color.fromARGB(255, 223, 64, 251),
-                  backgroundImage: AssetImage('assets/logos/Lil-Logo.jpg'), // Replace with your image
+                  backgroundImage: AssetImage('logos/Lil-Logo.jpg'), // Replace with your image
                 ),
                 const SizedBox(height: 15),
                 const Text(
@@ -581,15 +581,15 @@ class PhotographyPage extends StatelessWidget {
   const PhotographyPage({super.key});
 
   final List<String> carPhotos = const [
-    'assets/photography/CarsNCoffee-1.jpg',
-    'assets/photography/CarsNCoffee-3.jpg',
-    'assets/photography/CarsNCoffee-4.jpg',
-    'assets/photography/CarsNCoffee-7.jpg',
-    'assets/photography/CarsNCoffee-9.jpg',
-    'assets/photography/CarsNCoffee-10.jpg',
-    'assets/photography/CarsNCoffee-11.jpg',
-    'assets/photography/CarsNCoffee-13.jpg',
-    'assets/photography/CarsNCoffee-14.jpg',
+    'photography/CarsNCoffee-1.jpg',
+    'photography/CarsNCoffee-3.jpg',
+    'photography/CarsNCoffee-4.jpg',
+    'photography/CarsNCoffee-7.jpg',
+    'photography/CarsNCoffee-9.jpg',
+    'photography/CarsNCoffee-10.jpg',
+    'photography/CarsNCoffee-11.jpg',
+    'photography/CarsNCoffee-13.jpg',
+    'photography/CarsNCoffee-14.jpg',
   ];
 
   @override
